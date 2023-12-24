@@ -90,10 +90,11 @@ object EmptyObjectGenerator {
             List::class.java.isAssignableFrom(clazz) -> emptyList<Any>()
             clazz.isArray -> {
                 generateArray(
-                    clazz =  clazz,
+                    clazz = clazz,
                     emptyValue = emptyValue
                 )
             }
+
             else -> {
                 generate(clazz.kotlin, emptyValue = emptyValue)
             }
@@ -110,13 +111,17 @@ object EmptyObjectGenerator {
         val componentType = clazz.componentType
         return when {
             componentType.isArray -> generateNestedArray(
-                componentType.componentType,
-                arraySize,
-                innerArraySize,
-                emptyValue
+                innerComponentType = componentType.componentType,
+                arraySize = arraySize,
+                innerArraySize = innerArraySize,
+                emptyValue = emptyValue
             )
 
-            else -> generateSingleArray(componentType, arraySize, emptyValue)
+            else -> generateSingleArray(
+                componentType =  componentType,
+                arraySize =  arraySize,
+                emptyValue =  emptyValue
+            )
         }
     }
 
@@ -169,6 +174,7 @@ object EmptyObjectGenerator {
     private fun isPrimitiveTypeOnKotlin(type: KType): Boolean {
         return type.jvmErasure.javaPrimitiveType != null
     }
+
     data class EmptyValue(
         val string: String,
         val int: Int,
