@@ -11,6 +11,7 @@ buildscript {
 	}
 }
 
+
 apply(from = file("${rootDir}/scripts/publish-maven.gradle"))
 apply(from = "publish.gradle")
 
@@ -39,3 +40,4 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
