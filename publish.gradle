@@ -1,0 +1,15 @@
+ext {
+    PUBLISH_GROUP_ID = 'io.github.Yaklede'
+    PUBLISH_VERSION = '0.0.1'
+    PUBLISH_ARTIFACT_ID = 'empty-object-generator'
+    PUBLISH_DESCRIPTION = 'Empty Object Auto Generator Library'
+    PUBLISH_URL = 'https://github.com/Yaklede/EmptyObjectGenerator'
+    PUBLISH_LICENSE_NAME = 'Apache License'
+    PUBLISH_LICENSE_URL = 'https://github.com/Yaklede/EmptyObjectGenerator/LICENSE'
+    PUBLISH_DEVELOPER_ID = 'Yaklede'
+    PUBLISH_DEVELOPER_NAME = 'Jimin Jo'
+    PUBLISH_DEVELOPER_EMAIL = 'chh78151@gmail.com'
+    PUBLISH_SCM_CONNECTION = 'scm:git:github.com/Yaklede/EmptyObjectGenerator.git'
+    PUBLISH_SCM_DEVELOPER_CONNECTION = 'scm:git:ssh://github.com/Yaklede/EmptyObjectGenerator.git'
+    PUBLISH_SCM_URL = 'https://github.com/Yaklede/EmptyObjectGenerator/tree/main'
+}

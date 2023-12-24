@@ -2,10 +2,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	kotlin("jvm") version "1.9.21"
+	id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
-group = "com.empty.generator"
-version = "0.0.1-SNAPSHOT"
+buildscript {
+	dependencies {
+		this.classpath("io.github.gradle-nexus:publish-plugin:1.1.0")
+	}
+}
+
+apply(from = file("${rootDir}/scripts/publish-maven.gradle"))
+apply(from = "publish.gradle")
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
