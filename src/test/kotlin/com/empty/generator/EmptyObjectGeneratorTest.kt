@@ -9,8 +9,34 @@ class EmptyObjectGeneratorTest {
     fun setUp() = EmptyObjectGenerator.clearCustomTypeSupport()
 
     @Test
+    fun emptyPrimitiveTest() {
+        EmptyObjectGenerator.generate(EmptyPrimitiveObject::class).run {
+            assertThat(this).isNotNull
+            assertThat(this).isInstanceOf(EmptyPrimitiveObject::class.java)
+        }
+    }
+
+    @Test
+    fun emptyPrimitiveIsNullableTest() {
+        EmptyObjectGenerator.generate(EmptyPrimitiveObject::class, isNullable = true).run {
+            assertThat(this).isNotNull
+            assertThat(this).isInstanceOf(EmptyPrimitiveObject::class.java)
+            println(this)
+        }
+    }
+
+    @Test
+    fun complexEmptyPrimitiveIsNullableTest() {
+        EmptyObjectGenerator.generate(ComplexEmptyPrimitiveObject::class, isNullable = true).run {
+            assertThat(this).isNotNull
+            assertThat(this).isInstanceOf(ComplexEmptyPrimitiveObject::class.java)
+        }
+    }
+
+    @Test
     fun emptyArrayTest() {
         EmptyObjectGenerator.generate(EmptyArrayObject::class, defaultArraySize = 5).run {
+            println(this)
             assertThat(this.stringArray!!.size).isEqualTo(5)
             assertThat(this.intArray!!.size).isEqualTo(5)
             assertThat(this.longArray!!.size).isEqualTo(5)
@@ -21,51 +47,123 @@ class EmptyObjectGeneratorTest {
     }
 
     @Test
+    fun emptyArrayIsNullableTest() {
+        EmptyObjectGenerator.generate(EmptyArrayObject::class, defaultArraySize = 5, isNullable = true).run {
+            assertThat(this).isNotNull
+            assertThat(this).isInstanceOf(EmptyArrayObject::class.java)
+        }
+    }
+
+    @Test
     fun empty2DepthArrayTest() {
         EmptyObjectGenerator.generate(
-            Empty2DepthArrayObject::class,
-            defaultArraySize = 5,
-            defaultInnerArraySize = 10
+            EmptyNestedArrayObject::class,
+            defaultArraySize = 2,
+            defaultInnerArraySize = 5
         )
             .run {
-                assertThat(this.stringArray!!.size).isEqualTo(5)
-                stringArray.forEach {
-                    assertThat(it.size).isEqualTo(10)
+                assertThat(this.stringNestedArray!!.size).isEqualTo(2)
+                stringNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
                 }
-                assertThat(this.intArray!!.size).isEqualTo(5)
-                intArray.forEach {
-                    assertThat(it.size).isEqualTo(10)
+                assertThat(this.intNestedArray!!.size).isEqualTo(2)
+                intNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
                 }
-                println("long")
-                assertThat(this.longArray!!.size).isEqualTo(5)
-                longArray.forEach {
-                    assertThat(it.size).isEqualTo(10)
+                assertThat(this.longNestedArray!!.size).isEqualTo(2)
+                longNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
                 }
-                assertThat(this.floatArray!!.size).isEqualTo(5)
-                floatArray.forEach {
-                    assertThat(it.size).isEqualTo(10)
+                assertThat(this.floatNestedArray!!.size).isEqualTo(2)
+                floatNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
                 }
-                assertThat(this.booleanArray!!.size).isEqualTo(5)
-                booleanArray.forEach {
-                    assertThat(it.size).isEqualTo(10)
+                assertThat(this.booleanNestedArray!!.size).isEqualTo(2)
+                booleanNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
                 }
             }
     }
 
     @Test
+    fun emptyNestedArrayNullableTest() {
+        EmptyObjectGenerator.generate(
+            EmptyNestedArrayObject::class,
+            isNullable = true,
+            defaultArraySize = 2,
+            defaultInnerArraySize = 5
+        ).run {
+            assertThat(this).isNotNull
+            assertThat(this).isInstanceOf(EmptyNestedArrayObject::class.java)
+        }
+    }
+
+    @Test
+    fun complexObjectTest() {
+        EmptyObjectGenerator.generate(
+            ComplexObject::class,
+            defaultArraySize = 1,
+            defaultInnerArraySize = 2
+        ).run {
+            assertThat(this).isNotNull
+            assertThat(this).isInstanceOf(ComplexObject::class.java)
+        }
+    }
+
+    @Test
+    fun complexObjectNullableTest() {
+        EmptyObjectGenerator.generate(
+            ComplexObject::class,
+            isNullable = true,
+            defaultArraySize = 1,
+            defaultInnerArraySize = 2
+        ).run {
+            assertThat(this).isNotNull
+            assertThat(this).isInstanceOf(ComplexObject::class.java)
+        }
+    }
+
+    @Test
     fun supportTest() {
-        EmptyObjectGenerator.addCustomTypeSupport(
-            clazz = EmptySupportTestObject::class,
-            defaultValue = EmptySupportTestObject(
-                intArray = IntArray(10) { 1 },
-                EmptySupportTestInnerObject(
-                    int = 10,
-                    string = "innerObject"
-                )
+
+        val defaultValue = EmptySupportTestObject(
+            intArray = IntArray(10) { 1 },
+            EmptySupportTestInnerObject(
+                int = 10,
+                string = "innerObject"
             )
         )
 
+        EmptyObjectGenerator.addCustomTypeSupport(
+            clazz = EmptySupportTestObject::class,
+            defaultValue = defaultValue
+        )
+
         EmptyObjectGenerator.generate(EmptySupportTestObject::class).run {
+            assertThat(this.intArray!!.size).isEqualTo(10)
+            assertThat(this.innerObject).isNotNull
+            assertThat(this.innerObject!!.int).isEqualTo(10)
+            assertThat(this.innerObject!!.string).isEqualTo("innerObject")
+        }
+    }
+
+    @Test
+    fun supportNullableTest() {
+
+        val defaultValue = EmptySupportTestObject(
+            intArray = IntArray(10) { 1 },
+            EmptySupportTestInnerObject(
+                int = 10,
+                string = "innerObject"
+            )
+        )
+
+        EmptyObjectGenerator.addCustomTypeSupport(
+            clazz = EmptySupportTestObject::class,
+            defaultValue = defaultValue
+        )
+
+        EmptyObjectGenerator.generate(EmptySupportTestObject::class, isNullable = true).run {
             assertThat(this.intArray!!.size).isEqualTo(10)
             assertThat(this.innerObject).isNotNull
             assertThat(this.innerObject!!.int).isEqualTo(10)
@@ -81,6 +179,24 @@ class EmptyObjectGeneratorTest {
         }
     }
 
+    data class EmptyPrimitiveObject(
+        val string: String? = null,
+        val int: Int? = null,
+        val long: Long? = null,
+        val float: Float? = null,
+        val double: Double? = null,
+        val boolean: Boolean? = null
+    )
+
+    data class ComplexEmptyPrimitiveObject(
+        val nullableString: String? = null,
+        val nullableInt: Int? = null,
+        val nullableLong: Long? = null,
+        val float: Float,
+        val double: Double,
+        val boolean: Boolean,
+    )
+
     data class EmptyArrayObject(
         val stringArray: Array<String>? = null,
         val intArray: IntArray? = null,
@@ -90,13 +206,27 @@ class EmptyObjectGeneratorTest {
         val booleanArray: BooleanArray? = null
     )
 
-    data class Empty2DepthArrayObject(
-        val stringArray: Array<Array<String>>? = null,
-        val intArray: Array<IntArray>? = null,
-        val longArray: Array<LongArray>? = null,
-        val floatArray: Array<FloatArray>? = null,
-        val doubleArray: Array<DoubleArray>? = null,
-        val booleanArray: Array<BooleanArray>? = null,
+    data class EmptyNestedArrayObject(
+        val stringNestedArray: Array<Array<String>>? = null,
+        val intNestedArray: Array<IntArray>? = null,
+        val longNestedArray: Array<LongArray>? = null,
+        val floatNestedArray: Array<FloatArray>? = null,
+        val doubleNestedArray: Array<DoubleArray>? = null,
+        val booleanNestedArray: Array<BooleanArray>? = null,
+    )
+
+    data class ComplexObject(
+        val int: Int,
+        val stringNullable: String? = null,
+        val list: List<Any>,
+        val listNullable: List<Any>? = null,
+        val complexInnerObject: ComplexInnerObject? = null
+    )
+
+    data class ComplexInnerObject(
+        val boolean: Boolean,
+        val doubleArrayNullable: DoubleArray? = null,
+        val floatNestedArray: Array<FloatArray>
     )
 
     data class EmptySupportTestObject(
