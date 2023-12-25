@@ -4,7 +4,7 @@
 
 ```kotlin
 dependencies {
-    implementation("io.github.Yaklede:empty-object-generator:0.0.1")
+    implementation("io.github.Yaklede:empty-object-generator:0.1.1")
 }
 ```
 
