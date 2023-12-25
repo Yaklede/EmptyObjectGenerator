@@ -5,6 +5,7 @@ import kotlin.reflect.KType
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
 
+@Suppress("UNCHECKED_CAST")
 object EmptyObjectGenerator {
     private val customKotlinTypeSupports = mutableMapOf<KClass<*>, Any>()
     fun <T : Any> generate(
@@ -88,6 +89,8 @@ object EmptyObjectGenerator {
             clazz == Double::class.java -> emptyValue.double
             clazz == Boolean::class.java -> emptyValue.boolean
             List::class.java.isAssignableFrom(clazz) -> emptyList<Any>()
+            Set::class.java.isAssignableFrom(clazz) -> emptySet<Any>()
+            Map::class.java.isAssignableFrom(clazz) -> emptyMap<Any, Any>()
             clazz.isArray -> {
                 generateArray(
                     clazz = clazz,
@@ -118,9 +121,9 @@ object EmptyObjectGenerator {
             )
 
             else -> generateSingleArray(
-                componentType =  componentType,
-                arraySize =  arraySize,
-                emptyValue =  emptyValue
+                componentType = componentType,
+                arraySize = arraySize,
+                emptyValue = emptyValue
             )
         }
     }
@@ -130,13 +133,16 @@ object EmptyObjectGenerator {
         arraySize: Int,
         emptyValue: EmptyValue
     ): Cloneable {
-        return when (componentType) {
-            String::class.java -> Array(arraySize) { emptyValue.string }
-            Int::class.java -> IntArray(arraySize) { emptyValue.int }
-            Long::class.java -> LongArray(arraySize) { emptyValue.long }
-            Float::class.java -> FloatArray(arraySize) { emptyValue.float }
-            Double::class.java -> DoubleArray(arraySize) { emptyValue.double }
-            Boolean::class.java -> BooleanArray(arraySize) { emptyValue.boolean }
+        return when {
+            componentType == String::class.java -> Array(arraySize) { emptyValue.string }
+            componentType == Int::class.java -> IntArray(arraySize) { emptyValue.int }
+            componentType == Long::class.java -> LongArray(arraySize) { emptyValue.long }
+            componentType == Float::class.java -> FloatArray(arraySize) { emptyValue.float }
+            componentType == Double::class.java -> DoubleArray(arraySize) { emptyValue.double }
+            componentType == Boolean::class.java -> BooleanArray(arraySize) { emptyValue.boolean }
+            List::class.java.isAssignableFrom(componentType) -> Array(arraySize) { emptyList<Any>() }
+            Set::class.java.isAssignableFrom(componentType) -> Array(arraySize) { emptySet<Any>() }
+            Map::class.java.isAssignableFrom(componentType) -> Array(arraySize) { emptyMap<Any, Any>() }
             else -> Array(arraySize) { generate(componentType.kotlin, emptyValue = emptyValue) }
         }
     }
@@ -147,13 +153,16 @@ object EmptyObjectGenerator {
         innerArraySize: Int,
         emptyValue: EmptyValue
     ): Cloneable {
-        return when (innerComponentType) {
-            String::class.java -> Array(arraySize) { Array(innerArraySize) { emptyValue.string } }
-            Int::class.java -> Array(arraySize) { IntArray(innerArraySize) { emptyValue.int } }
-            Long::class.java -> Array(arraySize) { LongArray(innerArraySize) { emptyValue.long } }
-            Float::class.java -> Array(arraySize) { FloatArray(innerArraySize) { emptyValue.float } }
-            Double::class.java -> Array(arraySize) { DoubleArray(innerArraySize) { emptyValue.double } }
-            Boolean::class.java -> Array(arraySize) { BooleanArray(innerArraySize) { emptyValue.boolean } }
+        return when {
+            innerComponentType == String::class.java -> Array(arraySize) { Array(innerArraySize) { emptyValue.string } }
+            innerComponentType == Int::class.java -> Array(arraySize) { IntArray(innerArraySize) { emptyValue.int } }
+            innerComponentType == Long::class.java -> Array(arraySize) { LongArray(innerArraySize) { emptyValue.long } }
+            innerComponentType == Float::class.java -> Array(arraySize) { FloatArray(innerArraySize) { emptyValue.float } }
+            innerComponentType == Double::class.java -> Array(arraySize) { DoubleArray(innerArraySize) { emptyValue.double } }
+            innerComponentType == Boolean::class.java -> Array(arraySize) { BooleanArray(innerArraySize) { emptyValue.boolean } }
+            List::class.java.isAssignableFrom(innerComponentType) -> Array(arraySize) { Array(innerArraySize) { emptyList<Any>() } }
+            Set::class.java.isAssignableFrom(innerComponentType) -> Array(arraySize) { Array(innerArraySize) { emptySet<Any>() } }
+            Map::class.java.isAssignableFrom(innerComponentType) -> Array(arraySize) { Array(innerArraySize) { emptyMap<Any, Any>() } }
             else -> Array(0) { generate(innerComponentType.kotlin, emptyValue = emptyValue) }
         }
     }
