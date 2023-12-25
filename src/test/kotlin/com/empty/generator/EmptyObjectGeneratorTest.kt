@@ -11,6 +11,7 @@ class EmptyObjectGeneratorTest {
     @Test
     fun emptyPrimitiveTest() {
         EmptyObjectGenerator.generate(EmptyPrimitiveObject::class).run {
+            println(this)
             assertThat(this).isNotNull
             assertThat(this).isInstanceOf(EmptyPrimitiveObject::class.java)
         }
@@ -28,6 +29,7 @@ class EmptyObjectGeneratorTest {
     @Test
     fun complexEmptyPrimitiveIsNullableTest() {
         EmptyObjectGenerator.generate(ComplexEmptyPrimitiveObject::class, isNullable = true).run {
+            println(this)
             assertThat(this).isNotNull
             assertThat(this).isInstanceOf(ComplexEmptyPrimitiveObject::class.java)
         }
@@ -43,12 +45,16 @@ class EmptyObjectGeneratorTest {
             assertThat(this.doubleArray!!.size).isEqualTo(5)
             assertThat(this.floatArray!!.size).isEqualTo(5)
             assertThat(this.booleanArray!!.size).isEqualTo(5)
+            assertThat(this.listArray!!.size).isEqualTo(5)
+            assertThat(this.setArray!!.size).isEqualTo(5)
+            assertThat(this.mapArray!!.size).isEqualTo(5)
         }
     }
 
     @Test
     fun emptyArrayIsNullableTest() {
         EmptyObjectGenerator.generate(EmptyArrayObject::class, defaultArraySize = 5, isNullable = true).run {
+            println(this)
             assertThat(this).isNotNull
             assertThat(this).isInstanceOf(EmptyArrayObject::class.java)
         }
@@ -62,6 +68,7 @@ class EmptyObjectGeneratorTest {
             defaultInnerArraySize = 5
         )
             .run {
+                println(this)
                 assertThat(this.stringNestedArray!!.size).isEqualTo(2)
                 stringNestedArray.forEach {
                     assertThat(it.size).isEqualTo(5)
@@ -80,6 +87,18 @@ class EmptyObjectGeneratorTest {
                 }
                 assertThat(this.booleanNestedArray!!.size).isEqualTo(2)
                 booleanNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
+                }
+                assertThat(this.listNestedArray!!.size).isEqualTo(2)
+                listNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
+                }
+                assertThat(this.setNestedArray!!.size).isEqualTo(2)
+                setNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
+                }
+                assertThat(this.mapNestedArray!!.size).isEqualTo(2)
+                mapNestedArray.forEach {
                     assertThat(it.size).isEqualTo(5)
                 }
             }
@@ -185,7 +204,10 @@ class EmptyObjectGeneratorTest {
         val long: Long? = null,
         val float: Float? = null,
         val double: Double? = null,
-        val boolean: Boolean? = null
+        val boolean: Boolean? = null,
+        val list: List<Any>? = null,
+        val set: Set<Any>? = null,
+        val map: Map<Any, Any>? = null
     )
 
     data class ComplexEmptyPrimitiveObject(
@@ -195,6 +217,9 @@ class EmptyObjectGeneratorTest {
         val float: Float,
         val double: Double,
         val boolean: Boolean,
+        val nullableList: List<Any>? = null,
+        val set: Set<Any>,
+        val nullableMap: Map<Any, Any>? = null,
     )
 
     data class EmptyArrayObject(
@@ -203,7 +228,10 @@ class EmptyObjectGeneratorTest {
         val longArray: LongArray? = null,
         val floatArray: FloatArray? = null,
         val doubleArray: DoubleArray? = null,
-        val booleanArray: BooleanArray? = null
+        val booleanArray: BooleanArray? = null,
+        val listArray: Array<List<Any>>? = null,
+        val setArray: Array<Set<Any>>? = null,
+        val mapArray: Array<Map<Any, Any>>? = null
     )
 
     data class EmptyNestedArrayObject(
@@ -213,6 +241,9 @@ class EmptyObjectGeneratorTest {
         val floatNestedArray: Array<FloatArray>? = null,
         val doubleNestedArray: Array<DoubleArray>? = null,
         val booleanNestedArray: Array<BooleanArray>? = null,
+        val listNestedArray: Array<Array<List<Any>>>? = null,
+        val setNestedArray: Array<Array<Set<Any>>>? = null,
+        val mapNestedArray: Array<Array<Map<Any,Any>>>? = null
     )
 
     data class ComplexObject(
