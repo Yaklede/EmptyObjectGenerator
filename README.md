@@ -23,6 +23,9 @@ val long: Long
 val float: Float
 val double: Double
 val boolean: Boolean
+val list: List<Any>
+val set: Set<Any>
+val map: Map<Any,Any>
 
 val stringSingleArray: Array<String>
 val intSingleArray: IntArray
@@ -30,6 +33,9 @@ val longSingleArray: LongArray
 val floatSingleArray: FloatArray
 val doubleSingleArray: DoubleArray
 val booleanSingleArray: BooleanArray
+val listArray: Array<List<Any>>
+val setArray: Array<Set<Any>>
+val mapArray: Array<Map<Any,Any>>
 
 val stringNestedArray: Array<Array<String>>
 val intNestedArray: Array<IntArray>
@@ -37,6 +43,9 @@ val longNestedArray: Array<LongArray>
 val floatNestedArray: Array<FloatArray>
 val doubleNestedArray: Array<DoubleArray>
 val booleanNestedArray: Array<BooleanArray>
+val listNestedArray: Array<Array<List<Any>>>
+val setNestedArray: Array<Array<Set<Any>>>
+val mapNestedArray: Array<Array<Map<Any,Any>>>
 ```
 
 ## Supported Parameter
@@ -72,7 +81,10 @@ data class EmptyPrimitiveObject(
     val long: Long? = null,
     val float: Float? = null,
     val double: Double? = null,
-    val boolean: Boolean? = null
+    val boolean: Boolean? = null,
+    val list: List<Any>? = null,
+    val set: Set<Any>? = null,
+    val map: Map<Any,Any>? = null
 )
 
 val emptyPrimitiveObject = EmptyObjectGenerator.generate(EmptyPrimitiveObject::class)
@@ -84,7 +96,10 @@ EmptyPrimitiveObject(
     long = 0,
     float = 0.0f,
     double = 0.0,
-    boolean = false
+    boolean = false,
+    list = [],
+    set = [],
+    map = {}
 )
 
 //if you use parameter nullable = true
@@ -97,7 +112,10 @@ EmptyPrimitiveObject(
     long = null,
     float = null,
     double = null,
-    boolean = null
+    boolean = null,
+    list = null,
+    set = null,
+    map = null
 )
 
 //complex
@@ -108,6 +126,9 @@ data class ComplexEmptyPrimitiveObject(
     val float: Float,
     val double: Double,
     val boolean: Boolean,
+    val nullableList: List<Any>? = null,
+    val set: Set<Any>,
+    val nullableMap: Map<Any,Any>? = null,
 )
 
 val complexEmptyPrimitiveObject = EmptyObjectGenerator.generate(ComplexEmptyPrimitiveObject::class,isNullable = true)
@@ -119,7 +140,10 @@ ComplexEmptyPrimitiveObject(
     nullableLong=null,
     float=0.0f,
     double=0.0,
-    boolean=false
+    boolean=false,
+    nullableList=null,
+    set=[],
+    nullableMap=null
 )
 
 ```
@@ -133,7 +157,10 @@ data class EmptyArrayObject(
     val longArray: LongArray? = null,
     val floatArray: FloatArray? = null,
     val doubleArray: DoubleArray? = null,
-    val booleanArray: BooleanArray? = null
+    val booleanArray: BooleanArray? = null,
+    val listArray: Array<List<Any>>? = null,
+    val setArray: Array<Set<Any>>? = null,
+    val mapArray: Array<Map<Any, Any>>? = null
 )
 
 val emptyArrayObject = EmptyObjectGenerator.generate(EmptyArrayObject::class, defaultArraySize = 5)
@@ -145,7 +172,10 @@ EmptyArrayObject(
     longArray=[0, 0, 0, 0, 0],
     floatArray=[0.0f, 0.0f, 0.0f, 0.0f, 0.0f],
     doubleArray=[0.0, 0.0, 0.0, 0.0, 0.0],
-    booleanArray=[false, false, false, false, false]
+    booleanArray=[false, false, false, false, false],
+    listArray=[[], [], [], [], []],
+    setArray=[[], [], [], [], []],
+    mapArray=[{}, {}, {}, {}, {}]
 )
 
 //if you use parameter nullable = true
@@ -158,7 +188,10 @@ EmptyArrayObject(
     longArray=null,
     floatArray=null,
     doubleArray=null,
-    booleanArray=null
+    booleanArray=null,
+    listArray=null,
+    setArray=null,
+    mapArray = null
 )
 ```
 
@@ -170,7 +203,10 @@ data class EmptyNestedArrayObject(
     val longNestedArray: Array<LongArray>? = null,
     val floatNestedArray: Array<FloatArray>? = null,
     val doubleNestedArray: Array<DoubleArray>? = null,
-    val booleanNestedArray: Array<BooleanArray>? = null, 
+    val booleanNestedArray: Array<BooleanArray>? = null,
+    val listNestedArray: Array<Array<List<Any>>>? = null,
+    val setNestedArray: Array<Array<Set<Any>>>? = null,
+    val mapNestedArray: Array<Array<Map<Any,Any>>>? = null
 )
 
 val emptyNestedArrayObject = EmptyObjectGenerator.generate(
@@ -186,7 +222,10 @@ EmptyNestedArrayObject(
     longNestedArray=[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
     floatNestedArray=[[0.0f, 0.0f, 0.0f, 0.0f, 0.0f],[0.0f, 0.0f, 0.0f, 0.0f, 0.0f]], 
     doubleNestedArray=[[0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0]],
-    booleanNestedArray=[[false, false, false, false, false], [false, false, false, false, false]]
+    booleanNestedArray=[[false, false, false, false, false], [false, false, false, false, false]],
+    listNestedArray = [[[],[],[],[],[]]],
+    setNestedArray = [[[],[],[],[],[]]],
+    mapNestedArray = [[{},{},{},{},{}]]
 )
 //if you use parameter nullable = true
 val emptyNestedArrayObjectIsNullable = EmptyObjectGenerator.generate(
@@ -203,7 +242,10 @@ EmptyNestedArrayObject(
     longNestedArray=null,
     floatNestedArray=null,
     doubleNestedArray=null,
-    booleanNestedArray=null
+    booleanNestedArray=null,
+    listNestedArray = null,
+    setNestedArray = null,
+    mapNestedArray = null
 )
 ```
 
