@@ -198,6 +198,15 @@ class EmptyObjectGeneratorTest {
         }
     }
 
+    @Test
+    fun providerTest() {
+        EmptyObjectGenerator.generate(EmptyPrimitiveObject::class) {
+            println(it)
+            assertThat(it).isNotNull
+            assertThat(it).isInstanceOf(EmptyPrimitiveObject::class.java)
+        }
+    }
+
     data class EmptyPrimitiveObject(
         val string: String? = null,
         val int: Int? = null,

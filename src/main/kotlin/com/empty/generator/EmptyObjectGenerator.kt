@@ -8,6 +8,7 @@ import kotlin.reflect.jvm.jvmErasure
 @Suppress("UNCHECKED_CAST")
 object EmptyObjectGenerator {
     private val customKotlinTypeSupports = mutableMapOf<KClass<*>, Any>()
+
     fun <T : Any> generate(
         clazz: KClass<T>,
         isNullable: Boolean = false,
@@ -19,7 +20,37 @@ object EmptyObjectGenerator {
         defaultBoolean: Boolean = false,
         defaultArraySize: Int = 0,
         defaultInnerArraySize: Int = 0,
-        emptyValue: EmptyValue? = null
+        emptyValue: EmptyValue? = null,
+        provider: (T) -> Unit
+    ) {
+        val generate = this.generate(
+            clazz = clazz,
+            isNullable = isNullable,
+            defaultString = defaultString,
+            defaultInt = defaultInt,
+            defaultLong = defaultLong,
+            defaultFloat = defaultFloat,
+            defaultDouble = defaultDouble,
+            defaultBoolean = defaultBoolean,
+            defaultArraySize = defaultArraySize,
+            defaultInnerArraySize = defaultInnerArraySize,
+            emptyValue = emptyValue,
+        )
+        provider(generate)
+    }
+
+    fun <T : Any> generate(
+        clazz: KClass<T>,
+        isNullable: Boolean = false,
+        defaultString: String = "empty",
+        defaultInt: Int = 0,
+        defaultLong: Long = 0L,
+        defaultFloat: Float = 0f,
+        defaultDouble: Double = 0.0,
+        defaultBoolean: Boolean = false,
+        defaultArraySize: Int = 0,
+        defaultInnerArraySize: Int = 0,
+        emptyValue: EmptyValue? = null,
     ): T {
 
         this.customKotlinTypeSupports.forEach { (customKClass, value) ->
