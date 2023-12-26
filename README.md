@@ -278,7 +278,7 @@ ComplexObject(
     complexInnerObject=ComplexInnerObject(
         boolean=false,
         doubleArrayNullable=[0.0],
-        floatNestedArray=[[0.0, 0.0]
+        floatNestedArray=[[0.0, 0.0]]
     )
 )
 
