@@ -4,7 +4,7 @@
 
 ```kotlin
 dependencies {
-    implementation("io.github.Yaklede:empty-object-generator:0.1.1")
+    implementation("io.github.Yaklede:empty-object-generator:0.2.1")
 }
 ```
 
@@ -25,7 +25,7 @@ val double: Double
 val boolean: Boolean
 val list: List<Any>
 val set: Set<Any>
-val map: Map<Any,Any>
+val map: Map<Any, Any>
 
 val stringSingleArray: Array<String>
 val intSingleArray: IntArray
@@ -35,7 +35,7 @@ val doubleSingleArray: DoubleArray
 val booleanSingleArray: BooleanArray
 val listArray: Array<List<Any>>
 val setArray: Array<Set<Any>>
-val mapArray: Array<Map<Any,Any>>
+val mapArray: Array<Map<Any, Any>>
 
 val stringNestedArray: Array<Array<String>>
 val intNestedArray: Array<IntArray>
@@ -45,10 +45,18 @@ val doubleNestedArray: Array<DoubleArray>
 val booleanNestedArray: Array<BooleanArray>
 val listNestedArray: Array<Array<List<Any>>>
 val setNestedArray: Array<Array<Set<Any>>>
-val mapNestedArray: Array<Array<Map<Any,Any>>>
+val mapNestedArray: Array<Array<Map<Any, Any>>>
 ```
 
-## Supported Parameter
+## Supported Method
+
+| Method                   | Description                                                       |
+|--------------------------|-------------------------------------------------------------------|
+| `generate`               | Used to create an empty object.                                   |
+| `addCustomSupportType`   | Allows specifying the return type for the generated empty object. |
+| `clearCustomTypeSupport` | Resets all registered custom types.                               |
+
+### Generate Method Supported Parameter
 
 | Parameter             | Type        | Description                                                                   | Default Value | Required |
 |-----------------------|-------------|-------------------------------------------------------------------------------|---------------|----------|
@@ -64,10 +72,33 @@ val mapNestedArray: Array<Array<Map<Any,Any>>>
 | defaultInnerArraySize | Int         | The default size for 2-dimensional arrays.                                    | 0             | No       |
 | emptyValue            | EmptyValue? | Customizable empty value for additional support beyond primitive types.       | null          | No       |
 
+### addCustomSupportType Supported Parameter
+
+| Parameter      | Description                                                 | Type        | Default Value | Required |
+|----------------|-------------------------------------------------------------|-------------|---------------|----------|
+| `clazz`        | Represents the class of the supported custom Kotlin type.   | `KClass<*>` | -             | Yes      |
+| `defaultValue` | Represents the default value for the specified Kotlin type. | `Any`       | -             | Yes      |
+
+### clearCustomTypeSupport
+
+| Parameter       | Description                     | Type | Default Value | Required |
+|-----------------|---------------------------------|------|---------------|----------|
+| (No parameters) | (No parameters for this method) | -    | -             | No       |
+
 ## How use
+
+- The usual method involves receiving the return value and then utilizing it.
 
 ```kotlin
 val result: YourClass = EmptyObjectGenerator.generate(YourClass::class)
+```
+
+- You can use it directly within the method block without receiving the return value.
+
+```kotlin
+EmptyObjectGenerator.generate(YourClass::class) {
+    something(it)
+}
 ```
 
 ## Example
@@ -84,7 +115,7 @@ data class EmptyPrimitiveObject(
     val boolean: Boolean? = null,
     val list: List<Any>? = null,
     val set: Set<Any>? = null,
-    val map: Map<Any,Any>? = null
+    val map: Map<Any, Any>? = null
 )
 
 val emptyPrimitiveObject = EmptyObjectGenerator.generate(EmptyPrimitiveObject::class)
@@ -128,22 +159,22 @@ data class ComplexEmptyPrimitiveObject(
     val boolean: Boolean,
     val nullableList: List<Any>? = null,
     val set: Set<Any>,
-    val nullableMap: Map<Any,Any>? = null,
+    val nullableMap: Map<Any, Any>? = null,
 )
 
-val complexEmptyPrimitiveObject = EmptyObjectGenerator.generate(ComplexEmptyPrimitiveObject::class,isNullable = true)
+val complexEmptyPrimitiveObject = EmptyObjectGenerator.generate(ComplexEmptyPrimitiveObject::class, isNullable = true)
 
 //return
 ComplexEmptyPrimitiveObject(
-    nullableString=null,
-    nullableInt=null,
-    nullableLong=null,
-    float=0.0f,
-    double=0.0,
-    boolean=false,
-    nullableList=null,
-    set=[],
-    nullableMap=null
+    nullableString = null,
+    nullableInt = null,
+    nullableLong = null,
+    float = 0.0f,
+    double = 0.0,
+    boolean = false,
+    nullableList = null,
+    set = [],
+    nullableMap = null
 )
 
 ```
@@ -167,35 +198,37 @@ val emptyArrayObject = EmptyObjectGenerator.generate(EmptyArrayObject::class, de
 
 //returns
 EmptyArrayObject(
-    stringArray=["empty", "empty", "empty", "empty", "empty"],
-    intArray=[0, 0, 0, 0, 0],
-    longArray=[0, 0, 0, 0, 0],
-    floatArray=[0.0f, 0.0f, 0.0f, 0.0f, 0.0f],
-    doubleArray=[0.0, 0.0, 0.0, 0.0, 0.0],
-    booleanArray=[false, false, false, false, false],
-    listArray=[[], [], [], [], []],
-    setArray=[[], [], [], [], []],
-    mapArray=[{}, {}, {}, {}, {}]
+    stringArray = ["empty", "empty", "empty", "empty", "empty"],
+    intArray = [0, 0, 0, 0, 0],
+    longArray = [0, 0, 0, 0, 0],
+    floatArray = [0.0f, 0.0f, 0.0f, 0.0f, 0.0f],
+    doubleArray = [0.0, 0.0, 0.0, 0.0, 0.0],
+    booleanArray = [false, false, false, false, false],
+    listArray = [[], [], [], [], []],
+    setArray = [[], [], [], [], []],
+    mapArray = [{}, {}, {}, {}, {}]
 )
 
 //if you use parameter nullable = true
-val emptyArrayObjectIsNullable = EmptyObjectGenerator.generate(EmptyArrayObject::class, defaultArraySize = 5, isNullable = true)
+val emptyArrayObjectIsNullable =
+    EmptyObjectGenerator.generate(EmptyArrayObject::class, defaultArraySize = 5, isNullable = true)
 
 //return
 EmptyArrayObject(
-    stringArray=null,
-    intArray=null,
-    longArray=null,
-    floatArray=null,
-    doubleArray=null,
-    booleanArray=null,
-    listArray=null,
-    setArray=null,
+    stringArray = null,
+    intArray = null,
+    longArray = null,
+    floatArray = null,
+    doubleArray = null,
+    booleanArray = null,
+    listArray = null,
+    setArray = null,
     mapArray = null
 )
 ```
 
 ### Primitive nested array type
+
 ```kotlin
 data class EmptyNestedArrayObject(
     val stringNestedArray: Array<Array<String>>? = null,
@@ -206,7 +239,7 @@ data class EmptyNestedArrayObject(
     val booleanNestedArray: Array<BooleanArray>? = null,
     val listNestedArray: Array<Array<List<Any>>>? = null,
     val setNestedArray: Array<Array<Set<Any>>>? = null,
-    val mapNestedArray: Array<Array<Map<Any,Any>>>? = null
+    val mapNestedArray: Array<Array<Map<Any, Any>>>? = null
 )
 
 val emptyNestedArrayObject = EmptyObjectGenerator.generate(
@@ -217,15 +250,15 @@ val emptyNestedArrayObject = EmptyObjectGenerator.generate(
 
 //return
 EmptyNestedArrayObject(
-    stringNestedArray=[["empty", "empty", "empty", "empty", "empty"], ["empty", "empty", "empty", "empty", "empty"]],
-    intNestedArray=[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
-    longNestedArray=[[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
-    floatNestedArray=[[0.0f, 0.0f, 0.0f, 0.0f, 0.0f],[0.0f, 0.0f, 0.0f, 0.0f, 0.0f]], 
-    doubleNestedArray=[[0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0]],
-    booleanNestedArray=[[false, false, false, false, false], [false, false, false, false, false]],
-    listNestedArray = [[[],[],[],[],[]]],
-    setNestedArray = [[[],[],[],[],[]]],
-    mapNestedArray = [[{},{},{},{},{}]]
+    stringNestedArray = [["empty", "empty", "empty", "empty", "empty"], ["empty", "empty", "empty", "empty", "empty"]],
+    intNestedArray = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
+    longNestedArray = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
+    floatNestedArray = [[0.0f, 0.0f, 0.0f, 0.0f, 0.0f], [0.0f, 0.0f, 0.0f, 0.0f, 0.0f]],
+    doubleNestedArray = [[0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0]],
+    booleanNestedArray = [[false, false, false, false, false], [false, false, false, false, false]],
+    listNestedArray = [[[], [], [], [], []]],
+    setNestedArray = [[[], [], [], [], []]],
+    mapNestedArray = [[{}, {}, {}, {}, {}]]
 )
 //if you use parameter nullable = true
 val emptyNestedArrayObjectIsNullable = EmptyObjectGenerator.generate(
@@ -237,12 +270,12 @@ val emptyNestedArrayObjectIsNullable = EmptyObjectGenerator.generate(
 
 //return
 EmptyNestedArrayObject(
-    stringNestedArray=null,
-    intNestedArray=null,
-    longNestedArray=null,
-    floatNestedArray=null,
-    doubleNestedArray=null,
-    booleanNestedArray=null,
+    stringNestedArray = null,
+    intNestedArray = null,
+    longNestedArray = null,
+    floatNestedArray = null,
+    doubleNestedArray = null,
+    booleanNestedArray = null,
     listNestedArray = null,
     setNestedArray = null,
     mapNestedArray = null
@@ -250,6 +283,7 @@ EmptyNestedArrayObject(
 ```
 
 ### Complex type
+
 ```kotlin
 data class ComplexObject(
     val int: Int,
@@ -271,14 +305,14 @@ val complexObject = EmptyObjectGenerator.generate(
 )
 //return
 ComplexObject(
-    int=0,
-    stringNullable="empty",
-    list=[],
-    listNullable=[],
-    complexInnerObject=ComplexInnerObject(
-        boolean=false,
-        doubleArrayNullable=[0.0],
-        floatNestedArray=[[0.0, 0.0]]
+    int = 0,
+    stringNullable = "empty",
+    list = [],
+    listNullable = [],
+    complexInnerObject = ComplexInnerObject(
+        boolean = false,
+        doubleArrayNullable = [0.0],
+        floatNestedArray = [[0.0, 0.0]]
     )
 )
 
@@ -293,20 +327,21 @@ val complexObjectNullable = EmptyObjectGenerator.generate(
 
 //return
 ComplexObject(
-    int=0,
-    stringNullable=null,
-    list=[],
-    listNullable=null,
-    complexInnerObject=null
+    int = 0,
+    stringNullable = null,
+    list = [],
+    listNullable = null,
+    complexInnerObject = null
 )
 ```
 
-
 ## Custom Support
-### Caution
-- If you use a custom support it returns only default value
-- Objects registered with custom support are globally accessible, so use them with care to avoid unintended side effects throughout your application.
 
+### Caution
+
+- If you use a custom support it returns only default value
+- Objects registered with custom support are globally accessible, so use them with care to avoid unintended side effects
+  throughout your application.
 
 ```kotlin
 data class EmptySupportTestObject(
@@ -332,14 +367,14 @@ EmptyObjectGenerator.addCustomTypeSupport(
     defaultValue = defaultValue
 )
 
-val supportTypeObject =  EmptyObjectGenerator.generate(EmptySupportTestObject::class)
+val supportTypeObject = EmptyObjectGenerator.generate(EmptySupportTestObject::class)
 
 //return
 EmptySupportTestObject(
-    intArray=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    innerObject=EmptySupportTestInnerObject(
-        int=10,
-        string="innerObject"
+    intArray = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    innerObject = EmptySupportTestInnerObject(
+        int = 10,
+        string = "innerObject"
     )
 )
 
@@ -348,10 +383,10 @@ val emptySupportTestObjectNullable = EmptyObjectGenerator.generate(EmptySupportT
 
 //return
 EmptySupportTestObject(
-    intArray=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    innerObject=EmptySupportTestInnerObject(
-        int=10,
-        string="innerObject"
+    intArray = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    innerObject = EmptySupportTestInnerObject(
+        int = 10,
+        string = "innerObject"
     )
 )
 ```
