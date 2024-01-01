@@ -50,3 +50,11 @@ val listNestedArray: Array<Array<List<Any>>>
 val setNestedArray: Array<Array<Set<Any>>>
 val mapNestedArray: Array<Array<Map<Any, Any>>>
 ```
+
+## Supported Method
+
+| Method                   | Description                                                       |
+|--------------------------|-------------------------------------------------------------------|
+| `generate`               | Used to create an empty object.                                   |
+| `addCustomSupportType`   | Allows specifying the return type for the generated empty object. |
+| `clearCustomTypeSupport` | Resets all registered custom types.                               |
