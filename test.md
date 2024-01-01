@@ -87,3 +87,19 @@ val mapNestedArray: Array<Array<Map<Any, Any>>>
 | Parameter       | Description                     | Type | Default Value | Required |
 |-----------------|---------------------------------|------|---------------|----------|
 | (No parameters) | (No parameters for this method) | -    | -             | No       |
+
+## How use
+
+- The usual method involves receiving the return value and then utilizing it.
+
+```kotlin
+val result: YourClass = EmptyObjectGenerator.generate(YourClass::class)
+```
+
+- You can use it directly within the method block without receiving the return value.
+
+```kotlin
+EmptyObjectGenerator.generate(YourClass::class) {
+    something(it)
+}
+```
