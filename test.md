@@ -58,3 +58,19 @@ val mapNestedArray: Array<Array<Map<Any, Any>>>
 | `generate`               | Used to create an empty object.                                   |
 | `addCustomSupportType`   | Allows specifying the return type for the generated empty object. |
 | `clearCustomTypeSupport` | Resets all registered custom types.                               |
+
+### Generate Method Supported Parameter
+| Parameter             | Type        | Description                                                                   | Default Value  | Required |
+|-----------------------|-------------|-------------------------------------------------------------------------------|----------------|----------|
+| clazz                 | KClass<T>   | The Kotlin class for which an object needs to be generated.                   | -              | Yes      |
+| isNullable            | Boolean     | Internal data can be null. This can only be used if there is a nullable mark. | false          | No       |
+| defaultString         | String      | The default value for String types.                                           | "empty"        | No       |
+| defaultChar           | Char        | The default value for Char types.                                             | Char.MIN_VALUE | No       |
+| defaultInt            | Int         | The default value for Int types.                                              | 0              | No       |
+| defaultLong           | Long        | The default value for Long types.                                             | 0L             | No       |
+| defaultFloat          | Float       | The default value for Float types.                                            | 0.0f           | No       |
+| defaultDouble         | Double      | The default value for Double types.                                           | 0.0            | No       |
+| defaultBoolean        | Boolean     | The default value for Boolean types.                                          | false          | No       |
+| defaultArraySize      | Int         | The default size for 1-dimensional arrays.                                    | 0              | No       |
+| defaultInnerArraySize | Int         | The default size for 2-dimensional arrays.                                    | 0              | No       |
+| emptyValue            | EmptyValue? | Customizable empty value for additional support beyond primitive types.       | null           | No       |
