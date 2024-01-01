@@ -74,3 +74,16 @@ val mapNestedArray: Array<Array<Map<Any, Any>>>
 | defaultArraySize      | Int         | The default size for 1-dimensional arrays.                                    | 0              | No       |
 | defaultInnerArraySize | Int         | The default size for 2-dimensional arrays.                                    | 0              | No       |
 | emptyValue            | EmptyValue? | Customizable empty value for additional support beyond primitive types.       | null           | No       |
+
+### addCustomSupportType Supported Parameter
+
+| Parameter      | Description                                                 | Type        | Default Value | Required |
+|----------------|-------------------------------------------------------------|-------------|---------------|----------|
+| `clazz`        | Represents the class of the supported custom Kotlin type.   | `KClass<*>` | -             | Yes      |
+| `defaultValue` | Represents the default value for the specified Kotlin type. | `Any`       | -             | Yes      |
+
+### clearCustomTypeSupport
+
+| Parameter       | Description                     | Type | Default Value | Required |
+|-----------------|---------------------------------|------|---------------|----------|
+| (No parameters) | (No parameters for this method) | -    | -             | No       |
