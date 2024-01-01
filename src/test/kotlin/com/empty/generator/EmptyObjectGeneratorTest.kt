@@ -40,6 +40,7 @@ class EmptyObjectGeneratorTest {
         EmptyObjectGenerator.generate(EmptyArrayObject::class, defaultArraySize = 5).run {
             println(this)
             assertThat(this.stringArray!!.size).isEqualTo(5)
+            assertThat(this.charArray!!.size).isEqualTo(5)
             assertThat(this.intArray!!.size).isEqualTo(5)
             assertThat(this.longArray!!.size).isEqualTo(5)
             assertThat(this.doubleArray!!.size).isEqualTo(5)
@@ -71,6 +72,10 @@ class EmptyObjectGeneratorTest {
                 println(this)
                 assertThat(this.stringNestedArray!!.size).isEqualTo(2)
                 stringNestedArray.forEach {
+                    assertThat(it.size).isEqualTo(5)
+                }
+                assertThat(this.charNestedArray!!.size).isEqualTo(2)
+                charNestedArray.forEach {
                     assertThat(it.size).isEqualTo(5)
                 }
                 assertThat(this.intNestedArray!!.size).isEqualTo(2)
@@ -209,6 +214,7 @@ class EmptyObjectGeneratorTest {
 
     data class EmptyPrimitiveObject(
         val string: String? = null,
+        val char: Char? = null,
         val int: Int? = null,
         val long: Long? = null,
         val float: Float? = null,
@@ -221,6 +227,7 @@ class EmptyObjectGeneratorTest {
 
     data class ComplexEmptyPrimitiveObject(
         val nullableString: String? = null,
+        val char: Char,
         val nullableInt: Int? = null,
         val nullableLong: Long? = null,
         val float: Float,
@@ -233,6 +240,7 @@ class EmptyObjectGeneratorTest {
 
     data class EmptyArrayObject(
         val stringArray: Array<String>? = null,
+        val charArray: CharArray? = null,
         val intArray: IntArray? = null,
         val longArray: LongArray? = null,
         val floatArray: FloatArray? = null,
@@ -245,6 +253,7 @@ class EmptyObjectGeneratorTest {
 
     data class EmptyNestedArrayObject(
         val stringNestedArray: Array<Array<String>>? = null,
+        val charNestedArray: Array<CharArray>? = null,
         val intNestedArray: Array<IntArray>? = null,
         val longNestedArray: Array<LongArray>? = null,
         val floatNestedArray: Array<FloatArray>? = null,

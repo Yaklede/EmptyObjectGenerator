@@ -13,6 +13,7 @@ object EmptyObjectGenerator {
         clazz: KClass<T>,
         isNullable: Boolean = false,
         defaultString: String = "empty",
+        defaultChar: Char = Char.MIN_VALUE,
         defaultInt: Int = 0,
         defaultLong: Long = 0L,
         defaultFloat: Float = 0f,
@@ -27,6 +28,7 @@ object EmptyObjectGenerator {
             clazz = clazz,
             isNullable = isNullable,
             defaultString = defaultString,
+            defaultChar = defaultChar,
             defaultInt = defaultInt,
             defaultLong = defaultLong,
             defaultFloat = defaultFloat,
@@ -43,6 +45,7 @@ object EmptyObjectGenerator {
         clazz: KClass<T>,
         isNullable: Boolean = false,
         defaultString: String = "empty",
+        defaultChar: Char = Char.MIN_VALUE,
         defaultInt: Int = 0,
         defaultLong: Long = 0L,
         defaultFloat: Float = 0f,
@@ -64,6 +67,7 @@ object EmptyObjectGenerator {
         var emptyValue = getEmptyValue(
             emptyValue = emptyValue,
             defaultString = defaultString,
+            defaultChar = defaultChar,
             defaultInt = defaultInt,
             defaultLong = defaultLong,
             defaultFloat = defaultFloat,
@@ -88,6 +92,7 @@ object EmptyObjectGenerator {
     private fun getEmptyValue(
         emptyValue: EmptyValue?,
         defaultString: String,
+        defaultChar: Char,
         defaultInt: Int,
         defaultLong: Long,
         defaultFloat: Float,
@@ -99,6 +104,7 @@ object EmptyObjectGenerator {
         if (emptyValue == null) {
             return EmptyValue(
                 string = defaultString,
+                char = defaultChar,
                 int = defaultInt,
                 long = defaultLong,
                 float = defaultFloat,
@@ -114,6 +120,7 @@ object EmptyObjectGenerator {
     private fun generateEmptyValueJava(clazz: Class<*>, emptyValue: EmptyValue): Any {
         return when {
             clazz == String::class.java -> emptyValue.string
+            clazz == Char::class.java -> emptyValue.char
             clazz == Int::class.java -> emptyValue.int
             clazz == Long::class.java -> emptyValue.long
             clazz == Float::class.java -> emptyValue.float
@@ -166,6 +173,7 @@ object EmptyObjectGenerator {
     ): Cloneable {
         return when {
             componentType == String::class.java -> Array(arraySize) { emptyValue.string }
+            componentType == Char::class.java -> CharArray(arraySize) { emptyValue.char }
             componentType == Int::class.java -> IntArray(arraySize) { emptyValue.int }
             componentType == Long::class.java -> LongArray(arraySize) { emptyValue.long }
             componentType == Float::class.java -> FloatArray(arraySize) { emptyValue.float }
@@ -186,6 +194,7 @@ object EmptyObjectGenerator {
     ): Cloneable {
         return when {
             innerComponentType == String::class.java -> Array(arraySize) { Array(innerArraySize) { emptyValue.string } }
+            innerComponentType == Char::class.java -> Array(arraySize) { CharArray(innerArraySize) { emptyValue.char } }
             innerComponentType == Int::class.java -> Array(arraySize) { IntArray(innerArraySize) { emptyValue.int } }
             innerComponentType == Long::class.java -> Array(arraySize) { LongArray(innerArraySize) { emptyValue.long } }
             innerComponentType == Float::class.java -> Array(arraySize) { FloatArray(innerArraySize) { emptyValue.float } }
@@ -202,6 +211,7 @@ object EmptyObjectGenerator {
     private fun generateEmptyValueKotlin(type: KType, emptyValue: EmptyValue): Any {
         return when (type.classifier) {
             String::class -> emptyValue.string
+            Char::class -> emptyValue.char
             Int::class -> emptyValue.int
             Long::class -> emptyValue.long
             Float::class -> emptyValue.float
@@ -217,6 +227,7 @@ object EmptyObjectGenerator {
 
     data class EmptyValue(
         val string: String,
+        val char: Char,
         val int: Int,
         val long: Long,
         val float: Float,
