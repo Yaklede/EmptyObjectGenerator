@@ -37,4 +37,8 @@ public class EmptyObjectGeneratorUtil {
         emptyValue.setString(defaultString);
     }
 
+    public static void setDefaultChar(char defaultChar) {
+        emptyValue.setChar(defaultChar);
+    }
+
 }

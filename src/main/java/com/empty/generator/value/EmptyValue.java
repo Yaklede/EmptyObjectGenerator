@@ -3,6 +3,7 @@ package com.empty.generator.value;
 public class EmptyValue {
     private boolean isNullable;
     private String string;
+    private char aChar;
     private int anInt;
     private long aLong;
     private float aFloat;
@@ -32,6 +33,10 @@ public class EmptyValue {
 
     public String getString() {
         return string;
+    }
+
+    public char getChar() {
+        return aChar;
     }
 
     public int getInt() {
@@ -68,6 +73,10 @@ public class EmptyValue {
 
     public void setString(String string) {
         this.string = string;
+    }
+
+    public void setChar(char aChar) {
+        this.aChar = aChar;
     }
 
     public void setInt(int anInt) {
