@@ -40,5 +40,7 @@ public class EmptyObjectGeneratorUtil {
     public static void setDefaultChar(char defaultChar) {
         emptyValue.setChar(defaultChar);
     }
-
+    public static void setDefaultInt(Integer defaultInt) {
+        emptyValue.setInt(defaultInt);
+    }
 }
