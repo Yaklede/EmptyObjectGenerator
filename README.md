@@ -14,6 +14,8 @@ EmptyObjectGenerator is a Kotlin utility class that automatically generates obje
 inherently supports Kotlin's primitive types and extends its support to 1-dimensional and 2-dimensional arrays.
 Additionally, users have the flexibility to add custom support.
 
+**Note** : If your object has self-referencing behavior, please read and use 'Self Reference.
+
 ## Default Supported types
 
 ```kotlin
@@ -400,5 +402,24 @@ EmptySupportTestObject(
         int = 10,
         string = "innerObject"
     )
+)
+```
+
+## Self Reference
+
+**Note** : To enable self-referencing, it is essential to allow null for the respective field.
+
+```kotlin
+data class SelfReferenceObject(
+  val data: Any,
+  val self: SelfReferenceObject?
+)
+
+val selfReferenceObject = EmptyObjectGenerator.generate(SelfReferenceObject::class)
+
+//return
+SelfReferenceObject(
+  data=java.lang.Object,
+  self=null
 )
 ```
