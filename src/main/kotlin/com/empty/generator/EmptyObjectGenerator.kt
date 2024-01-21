@@ -3,6 +3,7 @@ package com.empty.generator
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.primaryConstructor
+import kotlin.reflect.javaType
 import kotlin.reflect.jvm.jvmErasure
 
 @Suppress("UNCHECKED_CAST")
@@ -79,9 +80,11 @@ object EmptyObjectGenerator {
 
         val argsMap = constructor.parameters.associateWith {
             val type = it.type
+
             when {
                 (type.isMarkedNullable && isNullable) -> null
                 isPrimitiveTypeOnKotlin(type) -> generateEmptyValueKotlin(it.type, emptyValue)
+                type.jvmErasure == constructor.returnType.jvmErasure -> null
                 else -> generateEmptyValueJava(type.jvmErasure.java, emptyValue)
             }
         }

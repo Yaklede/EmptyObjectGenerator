@@ -212,6 +212,13 @@ class EmptyObjectGeneratorTest {
         }
     }
 
+    @Test
+    fun selfReferenceTest() {
+        EmptyObjectGenerator.generate(SelfReferenceObject::class) {
+            println(it)
+        }
+    }
+
     data class EmptyPrimitiveObject(
         val string: String? = null,
         val char: Char? = null,
@@ -286,5 +293,10 @@ class EmptyObjectGeneratorTest {
     data class EmptySupportTestInnerObject(
         val int: Int? = null,
         val string: String? = null
+    )
+
+    data class SelfReferenceObject(
+        val data: Any,
+        val self: SelfReferenceObject?
     )
 }
